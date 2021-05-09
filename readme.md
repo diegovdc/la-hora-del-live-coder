@@ -2,7 +2,7 @@
 
 This is the repository with the code for the performance. And an tutorial for the techniques being used to dynamically create and compile `hydra` (https://hydra.ojack.xyz/) code.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/S-Y4cWhUE5I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![Performance video](https://img.youtube.com/vi/S-Y4cWhUE5I/0.jpg)](https://www.youtube.com/watch?v=S-Y4cWhUE5I)
 
 Personally, the most interesting thing about performance is in the communication between supercollider and hydra, since it is possible to control and even compile the hydra code from supercollider.
 
