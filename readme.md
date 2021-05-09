@@ -230,3 +230,7 @@ c.canon.player.onEvent({|ev|
 })
 )
 ```
+
+And thats it!
+
+If you enjoyed the music or the code, make sure to visit https://echoic.space for more music, ideas, and code.
