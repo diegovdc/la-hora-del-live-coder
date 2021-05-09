@@ -18,8 +18,8 @@ msg.on("/compile", ([voiceCount]) => {
     R.map(n => 'v'+n),
     R.pick(R.__, v)
  )(voiceCount)
-  main(v1)
-  v = v1
+  main(v1) // compile
+  v = v1 // reset voices
 });
 
 

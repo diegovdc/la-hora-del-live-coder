@@ -46,4 +46,4 @@ setAlgoDivData = (data) => {
     node.innerText = prop + ': ' + (Number.isInteger(val) ? val : val.toFixed(3))
   })
 }
-setAlgoDivData({voiceIndex: 0, eventIndex: 0})
+setAlgoDivData({voiceIndex: 0, eventIndex: 0, note: 0, r:0, g:0, b:0})

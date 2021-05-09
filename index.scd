@@ -15,8 +15,8 @@ m = FluentCan(osc: ~osc);
 	.durs([3])
 	.transps([0])
 	.len(10)
-	.notes([0])
-	.amps([0.5]+0.3)
+	.notes([-20])
+	.amps([0.9])
 	.cp([8])
 	.play;
 	~compileHydra.(c);
@@ -34,7 +34,7 @@ c.canon.player.onEvent({|ev|
 	(
 		freq: e.degreeToFreq(ev.note, 60,1),
 		instrument: \sin,
-		dur: ev.dur*[1, rrand(2, 20.0)].wchoose([5, 1]),
+		dur: ev.dur*[1, rrand(2, 20.0)].wchoose([5, 4].normalizeSum),
 		amp: ev.amp
 	).play;
 	CanPlayer.makeOSC(~merge.(ev,
