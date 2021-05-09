@@ -46,20 +46,31 @@ First a layering function was need. If we want three layers (or voices) at a giv
 shape().diff(shape()).diff(shape());
 ```
 
+Using the JS library Ramda layer looks simply like this.
+
 ```js
-layer = R.invoker(1, "diff"); // using the JS library Ramda
+layer = R.invoker(1, "diff");
 ```
 
-`layer` could also be written like this:
+But `layer` could also be written like this in vanilla js:
 
 ```js
 layer = (newLayer, accumulatedLayers) => accumulatedLayers.diff(newLayer);
 ```
 
-This next function (`makeLayer`) is in charge of creating each layer (i.e. each `shape()`). It receives the data from a single voice (actually just the key) to create each of the shapes individually.
-The `voices` object holds all the the different voices data (see below).
+An example use of layer is this:
 
 ```js
+layer1 = layer(shape(2), shape(1)); //shape(1).diff(shape(2))
+layer2 = layer(shape(3), layer1); // shape(1).diff(shape(2)).diff(shape(3))
+```
+
+But we want to create more interesting layers so this next function (`makeLayer`) is in charge of creating each layer (i.e. each `shape()`). It receives the data from a single voice (actually just the key) to create each of the shapes individually.
+
+The `voices` object holds all the the different voices data (see below); and this stateful object will be used to access the current voice values on every iteration of the hydra graphics loop.
+
+```js
+// this version returns a colored shape, but it can be as complex as desired
 makeLayer = (voice) =>
   solid(
     () => voices[voice].r || 0,
@@ -70,18 +81,24 @@ makeLayer = (voice) =>
 
 Next we define the `main` function which gets recompiled via osc.
 
-Here `reduce` is used to iterate by the number of voices and accumulate a signal.
+Here `R.reduce` is used to iterate by the number of voices and _accumulate_ our layers into a single signal. (Using js native `.reduce` or even `for loop` are good also alternatives).
 
 So if there are 2 voices one would get something like:
 
 ```js
-shape().diff(shape());
+shape(1).diff(shape(2));
 ```
 
 And with 3 voices something like:
 
 ```js
-shape().diff(shape()).diff(shape());
+shape(1).diff(shape(2)).diff(shape(3));
+```
+
+However for our function to work we need a _base_ layer. Something neutral, like `solid(0,0,0)`, works well. So we are actually going to get something like this:
+
+```js
+solid(0, 0, 0).diff(shape(1)).diff(shape(2)).diff(shape(3));
 ```
 
 And so on... All generated automatically.
@@ -91,10 +108,10 @@ One would just need to substitute `shape` by whatever the output of makeLayer is
 ```js
 main = (voices) =>
   R.reduce(
-    (acc, voice) => layer(makeLayer(voice), acc),
-    solid(0, 0, 0),
+    (acc, voice) => layer(makeLayer(voice), acc), // voice is just a key in the voices object, i.e. `"v1"`, or `"v2"`
+    solid(0, 0, 0), // this is the initial or base layer
     Object.keys(voices)
-  ).out();
+  ).out(); // we call .out on the accumulated layers
 ```
 
 The content of the `voices` object is defined separately, so that when a voice's parameter is updated (on every sound event), the object changes but the hydra code need not be recompiled.
